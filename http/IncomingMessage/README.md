@@ -1,0 +1,1 @@
+`http.IncomingMessage`对象是由`http.Server`和`http.ClientRequest`创建。并作为`resquest`和`response`事件的第一个参数。可以访问响应状态，响应头和响应消息。
