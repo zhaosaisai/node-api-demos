@@ -28,6 +28,53 @@
     }
 
     combineOptions(url, options)
+
+    return new Promise((resolve, reject) => {
+        // 超时时间是十分钟
+        options.timeout = options.timeout || 600000
+        // 请求的协议
+        const Http = options.protocol === 'https' ? https : http
+
+        const req = Http.request(options, (res) => {
+            let data = ''
+            res.setEncoding('utf8')
+
+            res.on('data', (chunk) => {
+                data += chunk
+            })
+
+            res.on('end', () => {
+                const statusCode = res.statusCode
+
+                try {
+                    data = JSON.parse(data)
+                    resolve(data)
+                } catch(e) {}
+
+                if (statusCode >= 200 && statusCode < 300 || statusCode === 304) {
+                    resolve(data)
+                } else {
+                    reject(data)
+                }
+            })
+        })
+
+        // 监听请求错误
+        req.on('error', (err) => {
+            reject(err)
+        })
+
+        // 监听请求超时事件
+        req.on('timeout', (err) => {
+            req.res && req.res.abort()
+            req.abort()
+            reject(err)
+        })
+
+        // 将数据写入请求体
+        req.write(data)
+        req.end()
+    })
  }
 
  function combineOptions(url, options) {
