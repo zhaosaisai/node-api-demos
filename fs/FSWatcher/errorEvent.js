@@ -4,7 +4,7 @@
 const fs = require('fs')
 const path = require('path')
 
-const watcher = fs.watch(path.resolve(__dirname, './README.md'), () => {})
+const watcher = fs.watch({}, () => {})
 
 watcher.on('error', () => {
     console.log('监视文件出错')
