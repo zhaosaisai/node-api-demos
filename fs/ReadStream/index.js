@@ -66,3 +66,36 @@ const filePath = path.resolve(__dirname, './baidu.txt')
         console.log(file.length)
     })
 }
+
+// 读取文件的部分的内容
+{
+    const file = fs.createReadStream(path.resolve(__dirname, './rangeFile.txt'), {
+        bufferSize: 1,
+        start: 1,
+        end: 2
+    })
+    let contentRead = ''
+    file.on('data', (data) => {
+        contentRead += data.toString('utf-8')
+    })
+    file.on('end', () => {
+        console.log(contentRead)
+        assert.strictEqual(contentRead, 'bc')
+    })
+}
+
+// 开始索引和结束索引是相同的
+{
+    const file = fs.createReadStream(path.resolve(__dirname, './rangeFile.txt'), {
+        start: 1, 
+        end: 1
+    })
+
+    let contentRead = ''
+    file.on('data', (data) => {
+        contentRead += data.toString('utf8')
+    })
+    file.on('end', () => {
+        assert.strictEqual(contentRead, 'b')
+    })
+}
