@@ -99,3 +99,20 @@ const filePath = path.resolve(__dirname, './baidu.txt')
         assert.strictEqual(contentRead, 'b')
     })
 }
+
+// 不会自动关闭文件
+{
+    const file = fs.createReadStream(path.resolve(__dirname, './rangeFile.txt'), {
+        autoClose: false
+    })
+
+    file.resume()
+    file.on('end', () => {
+        console.log('resume end')
+    })
+
+    process.on('exit', () => {
+        assert.ok(!file.closed)
+        assert.ok(!file.destroyd)
+    })
+}
