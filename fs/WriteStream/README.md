@@ -1,0 +1,1 @@
+WriteStream 实现了一个文件的可写流
