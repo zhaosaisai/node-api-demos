@@ -72,3 +72,42 @@ function throwNextTick(e) {
         })
     })
 }
+
+// 向一个文件中添加buffer
+{
+    const filename = join(__dirname, 'append-buffer.txt')
+
+    fs.writeFileSync(filename, currentFileData)
+    const buf = Buffer.from(s)
+
+    fs.appendFile(filename, buf, (err) => {
+        assert.ifError(err)
+
+        fs.readFile(filename, (err, data) => {
+            assert.ifError(err)
+            assert.strictEqual(buf.length + currentFileData.length, data.length)
+        })
+    })
+}
+
+// 通过文件描述符来操作文件
+{
+    const filename = join(__dirname, 'append-fd.txt')
+    fs.writeFileSync(filename, currentFileData)
+
+    fs.promises.open(filename, 'a+')
+        .then(fd => {
+            fs.promises.appendFile(fd, s)
+            return fd
+        })
+        .then(fd => {
+            fd.close()         
+        })
+        .then(fd => {
+            return fs.promises.readFile(filename)
+        })
+        .then(buffer => {
+            assert.strictEqual(Buffer.byteLength(s) + currentFileData.length, buffer.length)
+        })
+        .catch(throwNextTick)
+}
