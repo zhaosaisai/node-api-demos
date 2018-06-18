@@ -1,0 +1,1 @@
+/Users/zhaosai/Documents/51s/own/node-demos/fs/linkData.txt
