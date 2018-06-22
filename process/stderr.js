@@ -5,10 +5,14 @@
 const fork = require('child_process').fork
 
 if (process.argv[2] === 'child') {
-    process.stderr.write('A Error')
+    process.stderr.write('A Error\n')
 } else {
-    const child = fork(__dirname, ['child'])
+    const child = fork(__filename, ['child'])
     child.on('data', (chunk) => {
         console.log(chunk.toString())
+    })
+    child.on('exit', (exitCode) => {
+        console.log('Exit')
+        process.exit(exitCode)
     })
 }
