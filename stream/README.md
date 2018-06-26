@@ -12,6 +12,7 @@ stream模块主要是为了让开发者创建新类型的流实例。对于以�
     - Transform - 在读写过程中可以修改和转换数据的Duplex流。(如zlib.createDeflate())
 
 - 缓冲
+
     Writable 和 Readable流都会在内部的缓冲器中存储数据。我们可以通过writable.writeBuffer 和 readable.readBuffer来获取缓冲器中的数据。
 
     可缓冲的数据的大小取决于传递给流的highWaterMark属性的大小。对于普通的流而言，highWaterMark指定了字节的总大小。对于在对象模式中操作的流，highWaterMark指定了对象的总数目。
