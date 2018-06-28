@@ -86,9 +86,100 @@ const { inherits } = require('util')
 
     writable.on('error', (err) => {
         console.log(`${writable._name} is errored`)
-        assert.strictEqual(err, null)
+        // assert.strictEqual(err, null)
     })
 
     writable.destroy(error)
+    assert.strictEqual(writable.destroyed, true)
+}
+
+{
+    // 在创建流的时候传递自定义的destroy方法
+    const writable = new Writable({
+        write(chunk, enc, cb) {
+            cb()
+        },
+        destroy(err, cb) {
+            console.log('Error in fourth destroy')
+            assert.strictEqual(err, error)
+            // 下面这样调用是不会触发error事件
+            cb()
+            // 下面这样的调用会触发error事件
+            // cb(err)
+        }
+    })
+    const error = new Error('writable is errored')
+
+    writable.on('close', () => {
+        console.log('fourth is closed')
+    })
+
+    writable.on('finish', () => {
+        console.log('fourth is finished')
+    })
+
+    writable.on('error', () => {
+        console.log('error in fourth')
+    })
+
+    writable.destroy(error)
+    assert.strictEqual(writable.destroyed, true)
+}
+
+{
+    // 给destroy传递一个回调函数
+    const writable = new Writable({
+        write(chunk, enc, cb) {
+            cb()
+        }
+    })
+
+    const error = new Error('writable is errored')
+
+    writable.on('error', () => {
+        console.log('error in fifth')
+    })
+
+    // 如果设定了回调函数，是不会触发error事件的
+    writable.destroy(error, (err) => {
+        console.log('error in callback')
+        assert.strictEqual(err, error)
+        assert.strictEqual(writable.destroyed, true)
+    })
+    assert.strictEqual(writable.destroyed, true)
+}
+
+{
+    // 延迟执行我们的错误回调
+    const writable = new Writable({
+        write(chunk, enc, cb) {
+            cb()
+        }
+    })
+
+    const error = new Error('error')
+
+    writable._destroy = function(err, cb) {
+        console.log('error in _destroy six')
+        assert.strictEqual(err, error)
+        process.nextTick(() => {
+            this.end()
+            cb()
+        })
+    }
+
+    const fail = () => {
+        console.log('callback is not invoked')
+    }
+
+    writable.on('finish', fail)
+
+    writable.destroy(error)
+
+    writable.removeListener('finish', fail)
+    writable.on('finish', () => {
+        console.log('finish is invoked')
+    })
+
     assert.strictEqual(writable.destroyed, true)
 }
