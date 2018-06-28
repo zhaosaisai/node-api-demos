@@ -26,5 +26,38 @@ writable._write = (chunks, encoding, cb) => {
 }
 
 // first cork
+writable.cork()
+assert.strictEqual(writable._writableState.corked, 1)
+assert.strictEqual(writable._writableState.bufferedRequestCount, 0)
 
- 
+// secone cork
+writable.cork()
+assert.strictEqual(writable._writableState.corked, 2)
+assert.strictEqual(writable._writableState.bufferedRequestCount, 0)
+
+// the first chunk is buffered
+writable.write('first buffered')
+assert.strictEqual(writable._writableState.bufferedRequestCount, 1)
+
+// first uncork does not do anything
+writable.uncork()
+assert.strictEqual(writable._writableState.corked, 1)
+assert.strictEqual(writable._writableState.bufferedRequestCount, 1)
+
+process.nextTick(uncork)
+
+function uncork() {
+    // second uncork flushes the buffer
+  writable.uncork();
+  assert.strictEqual(writable._writableState.corked, 0)
+  assert.strictEqual(writable._writableState.bufferedRequestCount, 0)
+
+  // verify that end() uncorks correctly
+  writable.cork()
+  writable.write('third chunk')
+  writable.end()
+
+  // end causes an uncork() as well
+  assert.strictEqual(writable._writableState.corked, 0)
+  assert.strictEqual(writable._writableState.bufferedRequestCount, 0);
+}
