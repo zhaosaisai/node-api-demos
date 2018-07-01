@@ -12,6 +12,13 @@
  // 暂停流
  r.pause()
  
- r.on('readable', () => {
+ r.once('readable', () => {
+    console.log('数据可读了')
     assert.ok(Buffer.isBuffer(r.read(1)))
+    r.setEncoding('utf8')
+    r.on('data', chunk => {
+        console.log('data event')
+        assert.strictEqual(Buffer.isBuffer(chunk), false)
+    })
+    r.resume()
  })
