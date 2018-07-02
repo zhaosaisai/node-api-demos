@@ -26,4 +26,43 @@
   */
 
   const { Readable } = require('stream')
-  
+
+  class MyReadable extends Readable{
+      constructor(options) {
+          super(options)
+          this.max = options.max || 10
+          this.timer = null
+      }
+
+      _read() {
+          this.timer = setTimeout(() => {
+            if (this.max) {
+                this.push(`${this.max}推送`)
+                this.max--
+            } else {
+                this.push(null)
+            }
+          }, 50)
+      }
+  }
+
+  const r = new MyReadable({
+      max: 20
+  })
+
+  r.on('readable', () => {
+      const chunk = r.read()
+      if (chunk) {
+        console.log(`Got the data ${chunk.toString()}`)
+      }
+  })
+
+  r.on('end', () => {
+      console.log('读取结束')
+      clearTimeout(r.timer)
+  })
+
+  r.on('error', () => {
+      console.log('读取出错')
+      clearTimeout(r.timer)
+  })
