@@ -25,7 +25,22 @@
   * 当我们向缓冲区 push 一个 null 就停止了可读流对数据的缓存。
   */
 
+  /**
+   * readable._destroy(err, callback)
+   * 这个方法主要用于销毁可读流，这个方法可以通过readable.destroy()方法调用，也可以被子类覆盖，但是不能被
+   * 直接调用。
+   */
+
+   /**
+    * readable.push(chunk, encoding)
+    * 这个方法主要是向可读流的缓冲区中存入数据。如果数据存入缓冲区成功则返回true，失败则返回false。
+    * 当可读流处在传输模式下，'data'事件触发时，可以通过 调用readable.read() 方法读出来数据，这数据是用readable.push()添加的。
+    */
+
   const { Readable } = require('stream')
+  const assert = require('assert')
+
+  const error = new Error('自定义错误')
 
   class MyReadable extends Readable{
       constructor(options) {
@@ -38,11 +53,21 @@
           this.timer = setTimeout(() => {
             if (this.max) {
                 this.push(`${this.max}推送`)
+                // 随机产生错误
+                if (Math.random() < 0.5) {
+                    this.destroy(error)
+                }
                 this.max--
             } else {
                 this.push(null)
             }
           }, 50)
+      }
+
+      _destroy(err, cb) {
+            assert.strictEqual(err, error)
+            // 这样才能触发error事件
+            cb(err)
       }
   }
 
