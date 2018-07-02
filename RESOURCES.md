@@ -4,6 +4,6 @@
 
 > 👍(推荐) 👍👍(强烈推荐)
 
-> 🇺🇸 表示的英文文章
+> :us: 表示的英文文章
 
-- 👍👍 [讲述Nodejs事件循环的系列文章](https://jsblog.insiderattack.net/event-loop-and-the-big-picture-nodejs-event-loop-part-1-1cb67a182810) 🇺🇸
+- 👍👍 [讲述Nodejs事件循环的系列文章](https://jsblog.insiderattack.net/event-loop-and-the-big-picture-nodejs-event-loop-part-1-1cb67a182810) :us: 

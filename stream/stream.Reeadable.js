@@ -12,3 +12,18 @@
  *      read：对stream._read方法的实现
  *      destroy：对stream._destroy方法的实现
  */
+
+ /**
+  * readable._read(size)
+  *     size：异步读取的字节数
+  * 这个方法在创建自定义的可读流的时候是必须要实现的一个方法。应该由子类实现，并且在Readable对象的内部使用。
+  * 当readable._read()被调用，如果读取的数据是可用的，应该在最开始的实现的时候使用this.push(dataChunk)
+  * 方法将数据推入读取队列中。
+  * 
+  * 注意：一旦readable._read()方法被调用，只有在 readable.push()方法被调用之后，才能再次被调用。
+  * 
+  * 当我们向缓冲区 push 一个 null 就停止了可读流对数据的缓存。
+  */
+
+  const { Readable } = require('stream')
+  
