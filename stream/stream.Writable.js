@@ -45,6 +45,11 @@
      * 这个可选的函数将在流关闭之前被调用, 直到callback回调函数执行完成才触发finish事件。这对于关闭资源或在流结束之前写入缓冲数据很有用。
      */
 
+    /**
+     * 如果在_write或者_writev方法中发生了错误，我们需要将错误传递给回调函数的第一个参数，这样会触发error事件。
+     * 从writable._write()中抛出一个错误可能会导致意外和不一致的行为，具体取决于如何使用流。
+     */
+
  const assert = require('assert')
  const { Writable } = require('stream')
 
