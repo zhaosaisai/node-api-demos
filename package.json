@@ -1,0 +1,11 @@
+{
+  "name": "node-demos",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/zhaosaisai/node-demos.git",
+  "author": "zhaosaisai <zhaosaisai@u51.com>",
+  "license": "MIT",
+  "dependencies": {
+    "chance": "^1.0.16"
+  }
+}
