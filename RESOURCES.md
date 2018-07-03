@@ -7,3 +7,5 @@
 > :us: 表示的英文文章
 
 - 👍👍 [讲述Nodejs事件循环的系列文章](https://jsblog.insiderattack.net/event-loop-and-the-big-picture-nodejs-event-loop-part-1-1cb67a182810) :us: 
+
+- 👍 [Coding with streams](https://github.com/zhaosaisai/Node.js-Design-Patterns-Second-Edition/blob/master/Chapter5-Coding%20with%20Streams.md)
