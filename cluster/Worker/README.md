@@ -1,0 +1,5 @@
+Worker对象包含了所有关于工作进程的公共属性和方法。
+
+在主进程中，我们可以通过cluster.wrokers来获取到所有的worker对象。
+
+在工作进程中，我们可以通过cluster.worker来获取当前的工作进程对象。

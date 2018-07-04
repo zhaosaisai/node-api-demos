@@ -6,6 +6,7 @@
   "author": "zhaosaisai <zhaosaisai@u51.com>",
   "license": "MIT",
   "dependencies": {
-    "chance": "^1.0.16"
+    "chance": "^1.0.16",
+    "split": "^1.0.1"
   }
 }
