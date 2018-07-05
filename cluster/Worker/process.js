@@ -4,3 +4,11 @@
  * 
  * 需要注意：当process上发生 'disconnect'事件，并且.exitedAfterDisconnect的值不是true时，工作进程会调用 process.exit(0)。
  */
+const cluster = require('cluster')
+const assert = require('assert')
+
+if (cluster.isMaster) {
+    const worker = cluster.fork()
+    console.log(worker.process)
+    assert.strictEqual(typeof worker.process.pid, 'number')
+}
