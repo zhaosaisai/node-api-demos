@@ -1,0 +1,3 @@
+WHATWG URL是兼容浏览器URL类的api。基于WHATWG URL标准来实现。
+
+根据浏览器的规定，URL对象上的所有属性都是在类的原型上实现的getter和setter，而不是作为对象自身的属性存在的。在URL对象上的任何属性上使用delete关键字没有任何效果，但结果仍会返回true。
